@@ -13,15 +13,15 @@ import java.awt.Dimension;
 public class TicTacToe {
     static Grid a[][] = new Grid[3][3];
     static Random r = new Random();
+    static boolean endOfGame = false;
 
     public static void main(String[] args){
-		final JFrame mainFrame = new JFrame("LightsOut");					    //the frame for the game
+		final JFrame mainFrame = new JFrame("Tic Tac Toe");					    //the frame for the game
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel mainPanel = new JPanel(new GridLayout(3,3));
 		mainFrame.setSize(new Dimension(300, 300));
 		mainFrame.getContentPane().add(mainPanel);
 		mainFrame.setVisible(true);
-
         int i=0, j=0;
 
         for(i=0; i<3; i++){
@@ -35,23 +35,30 @@ public class TicTacToe {
                         if(checkIfWinner('O')){
                             JOptionPane b = new JOptionPane();
     						b.showMessageDialog(mainFrame, "You Won");			//this will show the win dialog box
-    						System.exit(1);
+    						reinitializeGrids();
+                            endOfGame = true;
                         }
                         if(checkIfDraw()){
                             JOptionPane b = new JOptionPane();
     						b.showMessageDialog(mainFrame, "Draw");
-    						System.exit(1);
+    						reinitializeGrids();
+                            endOfGame = true;
                         }
-                        turnOfAI();
-                        if(checkIfWinner('X')){
-                            JOptionPane b = new JOptionPane();
-    						b.showMessageDialog(mainFrame, "You Lose");			//this will show the win dialog box
-    						System.exit(1);
+                        if(!endOfGame){
+                            turnOfAI();
+                            if(checkIfWinner('X')){
+                                JOptionPane b = new JOptionPane();
+        						b.showMessageDialog(mainFrame, "You Lose");		//this will show the loose dialog box
+        						reinitializeGrids();
+                            }
+                            if(checkIfDraw()){
+                                JOptionPane b = new JOptionPane();
+        						b.showMessageDialog(mainFrame, "Draw");
+        						reinitializeGrids();
+                            }
                         }
-                        if(checkIfDraw()){
-                            JOptionPane b = new JOptionPane();
-    						b.showMessageDialog(mainFrame, "Draw");
-    						System.exit(1);
+                        else{
+                            endOfGame = false;
                         }
                     }
 				  }
@@ -106,5 +113,14 @@ public class TicTacToe {
         }
 
         return true;
+    }
+
+    public static void reinitializeGrids(){
+        int i=0, j=0;
+        for(i=0; i<3; i++){
+            for(j=0; j<3; j++){
+                a[i][j].restart();
+            }
+        }
     }
 }

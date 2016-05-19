@@ -20,4 +20,10 @@ public class Grid extends JButton {
         }
         else return false;
     }
+
+    public void restart(){
+        this.clickable = true;
+        this.letter = 'N';
+        this.setText(" ");
+    }
 }
