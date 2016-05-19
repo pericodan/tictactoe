@@ -7,6 +7,7 @@ public class Grid extends JButton {
     public Grid(){
         super(" ");
         this.clickable = true;
+        this.letter = 'N';
     }
 
     public boolean clicked(char a){

@@ -61,10 +61,19 @@ public class TicTacToe {
     }
 
     public static void turnOfAI(){
-        while(true){
+        /*while(true){
             if(a[r.nextInt(3)][r.nextInt(3)].clicked('X'))
                 break;
+        }*/
+        char temp[][] = new char[3][3];
+        for(int i=0; i<3; i++){
+            for(int j=0; j<3; j++){
+                temp[i][j] = a[i][j].letter;
+            }
         }
+
+        State root = new State(temp);
+        a[root.x][root.y].clicked('X');
     }
 
     public static boolean checkIfWinner(char letter){
