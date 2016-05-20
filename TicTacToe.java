@@ -9,18 +9,29 @@ import java.awt.Container;
 import java.io.*;
 import java.util.Random;
 import java.awt.Dimension;
+import java.awt.*;
+import javax.swing.*;
+
 
 public class TicTacToe {
     static Grid a[][] = new Grid[3][3];
+    static Grid b[][] = new Grid[1][2];
     static Random r = new Random();
     static boolean endOfGame = false;
+    static char playerSymbol;
+    static char opponentSymbol;
+    static JFrame cFrame = new JFrame("Tic Tac Toe");	
 
     public static void main(String[] args){
+
 		final JFrame mainFrame = new JFrame("Tic Tac Toe");					    //the frame for the game
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel mainPanel = new JPanel(new GridLayout(3,3));
+		mainPanel.setBackground(Color.BLACK);
+		mainFrame.pack();
 		mainFrame.setSize(new Dimension(300, 300));
-		mainFrame.getContentPane().add(mainPanel);
+		mainFrame.add(mainPanel);					
+		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setVisible(true);
         int i=0, j=0;
 
@@ -31,31 +42,36 @@ public class TicTacToe {
 				a[i][j].addActionListener(new ActionListener(){
 				  public void actionPerformed(ActionEvent e){
 				  	Grid a = (Grid)e.getSource();
-                    if(a.clicked('O')){
-                        if(checkIfWinner('O')){
+                    if(a.clicked(playerSymbol)){
+                        if(checkIfWinner(playerSymbol)){
                             JOptionPane b = new JOptionPane();
     						b.showMessageDialog(mainFrame, "You Won");			//this will show the win dialog box
     						reinitializeGrids();
+    						chooserWindow();
                             endOfGame = true;
                         }
                         if(checkIfDraw()){
                             JOptionPane b = new JOptionPane();
     						b.showMessageDialog(mainFrame, "Draw");
     						reinitializeGrids();
+    						chooserWindow();
                             endOfGame = true;
                         }
                         if(!endOfGame){
                             turnOfAI();
-                            if(checkIfWinner('X')){
+                            if(checkIfWinner(opponentSymbol)){
                                 JOptionPane b = new JOptionPane();
         						b.showMessageDialog(mainFrame, "You Lose");		//this will show the loose dialog box
         						reinitializeGrids();
+        						chooserWindow();
                             }
                             if(checkIfDraw()){
                                 JOptionPane b = new JOptionPane();
         						b.showMessageDialog(mainFrame, "Draw");
         						reinitializeGrids();
+        						chooserWindow();	
                             }
+
                         }
                         else{
                             endOfGame = false;
@@ -65,7 +81,73 @@ public class TicTacToe {
 				});
 			}
 		}
+
+		chooserWindow();
     }
+
+    public static void chooserWindow(){
+			
+		JPanel choosePanel = new JPanel(new GridLayout(1,2));
+		choosePanel.setBackground(Color.BLACK);
+		cFrame.add(choosePanel);
+		cFrame.pack();
+		cFrame.setSize(new Dimension(300, 300));					
+		cFrame.setLocationRelativeTo(null);
+		cFrame.setVisible(true);
+		int i;
+
+		ImageIcon imgx = new ImageIcon("x.jpg");
+        ImageIcon imgo = new ImageIcon("o.jpg");
+
+		for(i=0; i<2; i++){
+
+			b[0][i] = new Grid();
+
+			choosePanel.add(b[0][i]);
+
+			b[0][i].addActionListener(new ActionListener(){
+				@Override
+				  public void actionPerformed(ActionEvent e){
+				  	System.out.println(" ");
+
+				  	Grid a = (Grid)e.getSource();
+				  	buttonPress(a);
+
+				  }
+			});
+		}
+
+		for (i=0;i<2;i++){
+			if (i == 0){
+				b[0][i].letter = 'O';
+				b[0][i].setIcon(imgo);
+			}
+
+			if(i == 1){
+				b[0][i].letter = 'X';
+				b[0][i].setIcon(imgx);
+			}
+		}
+
+		cFrame.pack();
+		cFrame.setSize(new Dimension(300, 300));					
+		cFrame.setLocationRelativeTo(null);
+		cFrame.setVisible(true);
+	}
+
+	public static void buttonPress(Grid button){
+
+		if (button.letter == 'X'){
+			playerSymbol = 'X';
+			opponentSymbol = 'O';
+		}
+		else {
+			playerSymbol = 'O';
+			opponentSymbol = 'X';
+		}
+		cFrame.setVisible(false);
+	}	
+    
 
     public static void turnOfAI(){
         /*while(true){
@@ -79,8 +161,8 @@ public class TicTacToe {
             }
         }
 
-        State root = new State(temp);
-        a[root.x][root.y].clicked('X');
+        State root = new State(temp, opponentSymbol, playerSymbol);
+        a[root.x][root.y].clicked(opponentSymbol);
     }
 
     public static boolean checkIfWinner(char letter){

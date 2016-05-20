@@ -8,13 +8,17 @@ public class State{
     public int y;
     public int v;
     public char a[][];
+    public static char opponentSymbol;
+    public static char playerSymbol;
 
-    public State(char a[][]){
+    public State(char a[][], char o, char p){
         this.alpha = -1000;
         this.beta = 1000;
         this.v = -1000;
         this.a = a;
-        ArrayList<State> successors = this.getSuccessors('X');
+        this.opponentSymbol = o;
+        this.playerSymbol = p;
+        ArrayList<State> successors = this.getSuccessors(this.opponentSymbol);
         for(int i=0; i<successors.size(); i++){
             if(this.v<successors.get(i).v){
                 this.v = successors.get(i).v;
@@ -36,7 +40,7 @@ public class State{
         if(isUtility()){}
         else if(max){
             v = -1000;
-            ArrayList<State> successors = this.getSuccessors('X');
+            ArrayList<State> successors = this.getSuccessors(this.opponentSymbol);
             for(int i=0; i<successors.size(); i++){
                 this.v = Math.max(this.v, successors.get(i).v);
                 if(this.v>=this.beta){
@@ -47,7 +51,7 @@ public class State{
         }
         else{
             v = 1000;
-            ArrayList<State> successors = this.getSuccessors('O');
+            ArrayList<State> successors = this.getSuccessors(this.playerSymbol);
             for(int i=0; i<successors.size(); i++){
                 this.v = Math.min(this.v, successors.get(i).v);
                 if(this.v<=this.alpha){
@@ -70,7 +74,7 @@ public class State{
             				else tempA[x][y]=this.a[x][y];
             			}
             		}
-                    if(c=='X'){
+                    if(c==this.opponentSymbol){
                         s.add(new State(tempA, this.alpha, this.beta, false, i, j));
                     }
                     else{
@@ -82,7 +86,7 @@ public class State{
         return s;
     }
     public boolean isUtility(){
-        char letter = 'X';
+        char letter = this.opponentSymbol;
         int i=0, j=0, checker1=0, checker2=0;
         for(i=0; i<3; i++){
             for(j=0; j<3; j++){
@@ -107,7 +111,7 @@ public class State{
             return true;
         }
 
-        letter = 'O';
+        letter = this.playerSymbol;
         checker1=0;
         checker2=0;
 
