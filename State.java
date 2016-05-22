@@ -11,7 +11,7 @@ public class State{
     public static char opponentSymbol;
     public static char playerSymbol;
 
-    public State(char a[][], char o, char p){
+    public State(char a[][], char o, char p){                                   //initial constructor
         this.alpha = -1000;
         this.beta = 1000;
         this.v = -1000;
@@ -22,7 +22,7 @@ public class State{
         for(int i=0; i<successors.size(); i++){
             if(this.v<successors.get(i).v){
                 this.v = successors.get(i).v;
-                this.x = successors.get(i).x;
+                this.x = successors.get(i).x;                                   //to get the x and y coordinate of the best move
                 this.y = successors.get(i).y;
             }
             if(this.v>=this.beta){
@@ -31,14 +31,14 @@ public class State{
             this.alpha = Math.max(this.alpha, this.v);
         }
     }
-    public State(char a[][], int ap, int bt, boolean max, int x, int y){
+    public State(char a[][], int ap, int bt, boolean max, int x, int y){        //the succeeding constructor
         this.alpha = ap;
         this.beta = bt;
         this.x = x;
         this.y =y;
         this.a = a;
-        if(isUtility()){}
-        else if(max){
+        if(isUtility()){}                                                       //to check if it is already a utility node
+        else if(max){                                                           //if it is a max node
             v = -1000;
             ArrayList<State> successors = this.getSuccessors(this.opponentSymbol);
             for(int i=0; i<successors.size(); i++){
@@ -49,7 +49,7 @@ public class State{
                 this.alpha = Math.max(this.alpha, this.v);
             }
         }
-        else{
+        else{                                                                   //if it is a minimum node
             v = 1000;
             ArrayList<State> successors = this.getSuccessors(this.playerSymbol);
             for(int i=0; i<successors.size(); i++){
@@ -61,7 +61,7 @@ public class State{
             }
         }
     }
-    public ArrayList<State> getSuccessors(char c){
+    public ArrayList<State> getSuccessors(char c){                              //this function will get all the successors of a state
         ArrayList<State> s = new ArrayList<State>();
 		int i, j;
 		for(i=0; i<3; i++){
@@ -75,19 +75,19 @@ public class State{
             			}
             		}
                     if(c==this.opponentSymbol){
-                        s.add(new State(tempA, this.alpha, this.beta, false, i, j));
+                        s.add(new State(tempA, this.alpha, this.beta, false, i, j)); //min node
                     }
                     else{
-                        s.add(new State(tempA, this.alpha, this.beta, true, i, j));
+                        s.add(new State(tempA, this.alpha, this.beta, true, i, j)); //max node
                     }
                 }
 			}
 		}
         return s;
     }
-    public boolean isUtility(){
+    public boolean isUtility(){                                                 //this function will return true if the state is a utility and change the value of this.v
         char letter = this.opponentSymbol;
-        int i=0, j=0, checker1=0, checker2=0;
+        int i=0, j=0, checker1=0, checker2=0;                                   //to check if the utility is 1
         for(i=0; i<3; i++){
             for(j=0; j<3; j++){
                 if(this.a[i][j] == letter)
@@ -115,7 +115,7 @@ public class State{
         checker1=0;
         checker2=0;
 
-        for(i=0; i<3; i++){
+        for(i=0; i<3; i++){                                                     //to check if the utility is -1
             for(j=0; j<3; j++){
                 if(this.a[i][j] == letter)
                     checker1++;
@@ -138,13 +138,13 @@ public class State{
             return true;
         }
 
-        for(i=0; i<3; i++){
+        for(i=0; i<3; i++){                                                     //to check if it is not yet utility
             for(j=0; j<3; j++){
                 if(this.a[i][j]=='N')
                     return false;
             }
         }
-        this.v = 0;
+        this.v = 0;                                                             //the state is draw
         return true;
     }
 }

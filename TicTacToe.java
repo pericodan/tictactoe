@@ -20,7 +20,7 @@ public class TicTacToe {
     static boolean endOfGame = false;
     static char playerSymbol;
     static char opponentSymbol;
-    static JFrame cFrame = new JFrame("Tic Tac Toe");	
+    static JFrame cFrame = new JFrame("Tic Tac Toe");
 
     public static void main(String[] args){
 
@@ -30,7 +30,7 @@ public class TicTacToe {
 		mainPanel.setBackground(Color.BLACK);
 		mainFrame.pack();
 		mainFrame.setSize(new Dimension(300, 300));
-		mainFrame.add(mainPanel);					
+		mainFrame.add(mainPanel);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setVisible(true);
         int i=0, j=0;
@@ -57,7 +57,7 @@ public class TicTacToe {
     						chooserWindow();
                             endOfGame = true;
                         }
-                        if(!endOfGame){
+                        if(!endOfGame){                                         //while not end of game, AI whill choose a grid after the user
                             turnOfAI();
                             if(checkIfWinner(opponentSymbol)){
                                 JOptionPane b = new JOptionPane();
@@ -69,12 +69,12 @@ public class TicTacToe {
                                 JOptionPane b = new JOptionPane();
         						b.showMessageDialog(mainFrame, "Draw");
         						reinitializeGrids();
-        						chooserWindow();	
+        						chooserWindow();
                             }
 
                         }
                         else{
-                            endOfGame = false;
+                            endOfGame = false;                                  //to reset the game
                         }
                     }
 				  }
@@ -86,12 +86,12 @@ public class TicTacToe {
     }
 
     public static void chooserWindow(){
-			
+
 		JPanel choosePanel = new JPanel(new GridLayout(1,2));
 		choosePanel.setBackground(Color.BLACK);
 		cFrame.add(choosePanel);
 		cFrame.pack();
-		cFrame.setSize(new Dimension(300, 300));					
+		cFrame.setSize(new Dimension(300, 300));
 		cFrame.setLocationRelativeTo(null);
 		cFrame.setVisible(true);
 		int i;
@@ -130,7 +130,7 @@ public class TicTacToe {
 		}
 
 		cFrame.pack();
-		cFrame.setSize(new Dimension(300, 300));					
+		cFrame.setSize(new Dimension(300, 300));
 		cFrame.setLocationRelativeTo(null);
 		cFrame.setVisible(true);
 	}
@@ -146,26 +146,26 @@ public class TicTacToe {
 			opponentSymbol = 'X';
 		}
 		cFrame.setVisible(false);
-	}	
-    
+	}
+
 
     public static void turnOfAI(){
         /*while(true){
             if(a[r.nextInt(3)][r.nextInt(3)].clicked('X'))
                 break;
         }*/
-        char temp[][] = new char[3][3];
+        char temp[][] = new char[3][3];                                         //to copy the current state of the game into an array
         for(int i=0; i<3; i++){
             for(int j=0; j<3; j++){
                 temp[i][j] = a[i][j].letter;
             }
         }
 
-        State root = new State(temp, opponentSymbol, playerSymbol);
-        a[root.x][root.y].clicked(opponentSymbol);
+        State root = new State(temp, opponentSymbol, playerSymbol);             //to know the best possible move
+        a[root.x][root.y].clicked(opponentSymbol);                              //to clicked for that move
     }
 
-    public static boolean checkIfWinner(char letter){
+    public static boolean checkIfWinner(char letter){                           //to check if the given symbol is already a winner
         int i=0, j=0, checker1=0, checker2=0;
         for(i=0; i<3; i++){
             for(j=0; j<3; j++){
@@ -185,7 +185,7 @@ public class TicTacToe {
         else return false;
     }
 
-    public static boolean checkIfDraw(){
+    public static boolean checkIfDraw(){                                        //to check if the board is full and there is no winner
         int i=0, j=0, checker1=0, checker2=0;
         for(i=0; i<3; i++){
             for(j=0; j<3; j++){
@@ -197,7 +197,7 @@ public class TicTacToe {
         return true;
     }
 
-    public static void reinitializeGrids(){
+    public static void reinitializeGrids(){                                     //to start another game
         int i=0, j=0;
         for(i=0; i<3; i++){
             for(j=0; j<3; j++){

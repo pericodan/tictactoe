@@ -1,3 +1,6 @@
+/*
+    this class is for each grid of the board
+*/
 import javax.swing.JButton;
 import java.awt.*;
 import javax.swing.*;
@@ -5,7 +8,7 @@ import javax.swing.*;
 public class Grid extends JButton {
     public boolean clickable;
     public char letter;
-    
+
     public Grid(){
         super(" ");
         this.clickable = true;
@@ -40,7 +43,7 @@ public class Grid extends JButton {
         this.letter = 'N';
         this.setText(" ");
         this.setIcon(imgn);
-       
+
 
     }
 }
